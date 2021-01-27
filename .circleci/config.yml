@@ -1,0 +1,23 @@
+version: 2.1
+defaults: &defaults
+  docker:
+    - image: python:3.7-alpine3.11
+
+# Here the start of the exercise from the course:
+jobs:
+  create_infrastructure:
+    <<: *defaults
+    steps:
+      - checkout
+      - add_ssh_keys: ["5f:ac:d2:4b:2b:a0:e6:c9:1c:93:c2:bc:15:bf:e8:82"]
+      - run: apk add --update ansible
+      - run:
+          command: |
+            ansible-playbook main-remote.yml -i inventory
+      #     when: on_fail
+
+workflows:
+  create_infrastructure:
+    # Run the welcome/run job in its own container
+    jobs:
+      - create_infrastructure
