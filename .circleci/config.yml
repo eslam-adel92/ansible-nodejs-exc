@@ -9,13 +9,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - add_ssh_keys: ["5f:ac:d2:4b:2b:a0:e6:c9:1c:93:c2:bc:15:bf:e8:82"]
+      - add_ssh_keys:
+          fingerprints:
+            - "5f:ac:d2:4b:2b:a0:e6:c9:1c:93:c2:bc:15:bf:e8:82"
       - run: apk add --update ansible
-      - run:
-          command: |
-            ansible-playbook main-remote.yml -i inventory
-      #     when: on_fail
-
+      - run: ansible-playbook main-remote.yml -i inventory
+      
 workflows:
   create_infrastructure:
     # Run the welcome/run job in its own container
